@@ -51,8 +51,8 @@ class YouTubeChannel extends React.Component {
         <div className={`iframe-container ${iframe_container_class || ''}`}>
           <iframe
             id='player'
-            width={width || 100}
-            height={height || 100}
+            width={width || 640}
+            height={height || 390}
             frameBorder={frame_border || '0'}
             src={`http://www.youtube.com/embed/${this.state.video_id}?enablejsapi=1`}
             style={iframe_style || {}}

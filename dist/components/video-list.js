@@ -1,10 +1,6 @@
 import React from 'react';
 
 const VideoList = ({ video_list, handleChange, show_thumbnails }) => {
-  const video_style = {
-    cursor: 'pointer'
-  };
-
   return React.createElement(
     'div',
     null,
