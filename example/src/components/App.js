@@ -7,13 +7,10 @@ import './styles.scss';
 const App = () => {
   return (
     <YouTubeChannel
-      style={{
-        width: '100%'
-      }}
-      width={680}
+      width={'50%'}
       height={390}
       api_key='AIzaSyAgqLIxOST5fML1Ywg_xW6F5ttvnjSqjqQ'
-      channel_id='UCEIYrClefbEwdcwjQJ6eFIg'
+      playlist_id='PL64BwQcJEEVImdziHEAlXzb5Zhzs1KNKT'
       show_thumbnails
     />
   )

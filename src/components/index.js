@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { videoInit, fetchVideos } from 'utils';
+import { videoInit, fetchVideos, getWidth } from 'utils';
 import VideoList from './video-list';
 
 class YouTubeChannel extends React.Component {
   static propTypes = {
     api_key: PropTypes.string.isRequired,
-    channel_id: PropTypes.string.isRequired,
+    channel_id: PropTypes.string,
+    playlist_id: PropTypes.string,
     width: PropTypes.oneOfType([
       PropTypes.string, PropTypes.number
     ]),
@@ -19,19 +20,22 @@ class YouTubeChannel extends React.Component {
     iframe_style: PropTypes.object,
     show_thumbnails: PropTypes.bool,
     iframe_container_class: PropTypes.string,
-    video_list_container_class: PropTypes.string
+    video_list_container_class: PropTypes.string,
+    scrolling : PropTypes.oneOf(['yes', 'no', 'auto']),
   }
+
   constructor(props) {
     super(props);
 
     this.state = {
       video_list : [],
-      video_id : ''
+      video_id : '',
+      iframe_width : 640
     }
   }
 
   componentDidMount() {
-    const {api_key, playlist_id, channel_id} = this.props;
+    const {api_key, playlist_id, channel_id, width} = this.props;
     if(!api_key) {
       throw new Error('An API key must be provided');
     }
@@ -49,6 +53,10 @@ class YouTubeChannel extends React.Component {
       })
       .catch(e => {throw new Error(e.message || e)})
     }
+
+    if(width) {
+      this.setState({iframe_width : getWidth(String(width))});
+    }
   }
 
   render() {
@@ -61,23 +69,29 @@ class YouTubeChannel extends React.Component {
       iframe_container_class,
       video_list_container_class,
       show_thumbnails,
+      scrolling,
     } = this.props;
 
     return (
-      <div style={this.props.style} className={`react-youtube-channel-container ${container_class || ''}`}>
+      <div
+        id='react-youtube-channel-container'
+        className={`${container_class || ''}`}
+        >
         <div className={`iframe-container ${iframe_container_class || ''}`}>
           <iframe
             id='player'
-            width={width || 640}
+            width={this.state.iframe_width}
             height={height || 390}
             frameBorder={frame_border || '0'}
             src={`http://www.youtube.com/embed/${this.state.video_id}?enablejsapi=1`}
             style={iframe_style || {}}
             allowFullScreen
+            scrolling={`${'yes' || scrolling}`}
           />
         </div>
         <div
-          className={`video-list-container ${video_list_container_class || ''}`}
+          id='video-list-container'
+          className={`${video_list_container_class || ''}`}
           style={{height}}
           >
           <VideoList
