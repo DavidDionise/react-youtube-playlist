@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'react-proptypes';
+import PropTypes from 'prop-types';
 import { videoInit, fetchVideos } from 'utils';
 import VideoList from './video-list';
 
@@ -7,13 +7,13 @@ class YouTubeChannel extends React.Component {
   static propTypes = {
     api_key: PropTypes.string.isRequired,
     channel_id: PropTypes.string.isRequired,
-    width: PropTypes.oneOf([
+    width: PropTypes.oneOfType([
       PropTypes.string, PropTypes.number
     ]),
-    height: PropTypes.oneOf([
+    height: PropTypes.oneOfType([
       PropTypes.string, PropTypes.number
     ]),
-    frame_border: PropTypes.oneOf([
+    frame_border: PropTypes.oneOfType([
       PropTypes.string, PropTypes.number
     ]),
     iframe_style: PropTypes.object,
