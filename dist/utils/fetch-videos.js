@@ -3,15 +3,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 import { youTubeFetch } from './';
 
 const fetchVideos = (() => {
-  var _ref = _asyncToGenerator(function* (channel_id, api_key) {
-    const channel_data = yield youTubeFetch(channel_id, null, api_key);
-    const { uploads } = channel_data.items[0].contentDetails.relatedPlaylists;
-    const video_data = yield youTubeFetch(null, uploads, api_key);
+  var _ref = _asyncToGenerator(function* (channel_id, playlist_id, api_key) {
+    let playlist = playlist_id || '';
+    if (playlist_id == '') {
+      const channel_data = yield youTubeFetch(channel_id, null, api_key);
+      const playlist = channel_data.items[0].contentDetails.relatedPlaylists.uploads;
+    }
+    const video_data = yield youTubeFetch(null, playlist_id, api_key);
 
     return yield Promise.resolve(video_data.items);
   });
 
-  return function fetchVideos(_x, _x2) {
+  return function fetchVideos(_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 })();

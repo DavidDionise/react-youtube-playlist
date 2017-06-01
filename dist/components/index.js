@@ -13,15 +13,14 @@ class YouTubeChannel extends React.Component {
   }
 
   componentDidMount() {
-    const { api_key, channel_id } = this.props;
+    const { api_key, playlist_id, channel_id } = this.props;
     if (!api_key) {
       throw 'An API key must be provided';
     }
-    if (!channel_id) {
-      throw 'A channel ID must be provided';
+    if (!channel_id && !playlist_id) {
+      throw 'A channel ID or playlist ID must be provided';
     } else {
-      videoInit();
-      fetchVideos(channel_id, api_key).then(list => {
+      fetchVideos(channel_id, playlist_id, api_key).then(list => {
         let video_id = '';
         if (list.length > 0) {
           video_id = list[0].snippet.resourceId.videoId;
@@ -47,7 +46,7 @@ class YouTubeChannel extends React.Component {
 
     return React.createElement(
       'div',
-      { className: `react-youtube-channel-container ${container_class || ''}` },
+      { style: this.props.style, className: `react-youtube-channel-container ${container_class || ''}` },
       React.createElement(
         'div',
         { className: `iframe-container ${iframe_container_class || ''}` },
