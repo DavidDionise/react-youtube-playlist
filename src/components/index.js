@@ -17,15 +17,18 @@ class YouTubeChannel extends React.Component {
     if(!api_key) {
       throw 'An API key must be provided';
     }
+    if(!channel_id) {
+      throw 'A channel ID must be provided';
+    }
     else {
       videoInit();
       fetchVideos(channel_id, api_key)
-      .then(r => {
+      .then(list => {
         let video_id = '';
-        if(r.length > 0) {
-          video_id = r[0].snippet.resourceId.videoId;
+        if(list.length > 0) {
+          video_id = list[0].snippet.resourceId.videoId;
         }
-        this.setState({video_list : r, video_id});
+        this.setState({video_list : list, video_id});
       })
       .catch(e => {throw new Error(e.message || e)})
     }
@@ -53,6 +56,7 @@ class YouTubeChannel extends React.Component {
             frameBorder={frame_border || '0'}
             src={`http://www.youtube.com/embed/${this.state.video_id}?enablejsapi=1`}
             style={iframe_style || {}}
+            allowFullScreen
           />
         </div>
         <div

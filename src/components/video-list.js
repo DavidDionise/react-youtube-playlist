@@ -16,10 +16,9 @@ const VideoList = ({video_list, handleChange, show_thumbnails}) => {
           <div
             className='video-container'
             key={v.id}
-            style={{width : '100%'}}
             onClick={() => {handleChange(videoId)}}
             >
-            {show_thumbnails ? <img src={url} style={{width : '100%'}}/> : null}
+            {show_thumbnails ? <img src={url} /> : null}
             <div className='title-container'>
               <p>{title}</p>
             </div>

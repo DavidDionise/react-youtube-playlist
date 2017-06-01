@@ -18,12 +18,11 @@ const VideoList = ({ video_list, handleChange, show_thumbnails }) => {
         {
           className: 'video-container',
           key: v.id,
-          style: { width: '100%' },
           onClick: () => {
             handleChange(videoId);
           }
         },
-        show_thumbnails ? React.createElement('img', { src: url, style: { width: '100%' } }) : null,
+        show_thumbnails ? React.createElement('img', { src: url }) : null,
         React.createElement(
           'div',
           { className: 'title-container' },

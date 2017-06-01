@@ -14,6 +14,11 @@
 
   .video-container {
     margin-top: 5px;
+    width : 100%;
+
+    img {
+      width : 100%;
+    }
   }
 
   .video-container:hover {
