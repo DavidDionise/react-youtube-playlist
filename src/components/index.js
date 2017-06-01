@@ -1,8 +1,26 @@
 import React from 'react';
-import {videoInit, fetchVideos} from 'utils';
+import PropTypes from 'react-proptypes';
+import { videoInit, fetchVideos } from 'utils';
 import VideoList from './video-list';
 
 class YouTubeChannel extends React.Component {
+  static propTypes = {
+    api_key: PropTypes.string.isRequired,
+    channel_id: PropTypes.string.isRequired,
+    width: PropTypes.oneOf([
+      PropTypes.string, PropTypes.number
+    ]),
+    height: PropTypes.oneOf([
+      PropTypes.string, PropTypes.number
+    ]),
+    frame_border: PropTypes.oneOf([
+      PropTypes.string, PropTypes.number
+    ]),
+    iframe_style: PropTypes.object,
+    show_thumbnails: PropTypes.bool,
+    iframe_container_class: PropTypes.string,
+    video_list_container_class: PropTypes.string
+  }
   constructor(props) {
     super(props);
 
@@ -15,7 +33,7 @@ class YouTubeChannel extends React.Component {
   componentDidMount() {
     const {api_key, playlist_id, channel_id} = this.props;
     if(!api_key) {
-      throw 'An API key must be provided';
+      throw new Error('An API key must be provided');
     }
     if(!channel_id && !playlist_id) {
       throw 'A channel ID or playlist ID must be provided';
