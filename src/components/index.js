@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { videoInit, fetchVideos, getWidth } from 'utils';
 import VideoList from './video-list';
+import {
+  videoInit,
+  fetchVideos,
+  getWidth,
+  getHeight
+ } from 'utils';
 
 class YouTubeChannel extends React.Component {
   static propTypes = {
@@ -30,12 +35,13 @@ class YouTubeChannel extends React.Component {
     this.state = {
       video_list : [],
       video_id : '',
-      iframe_width : 640
+      iframe_width : 640,
+      iframe_height : 390
     }
   }
 
   componentDidMount() {
-    const {api_key, playlist_id, channel_id, width} = this.props;
+    const {api_key, playlist_id, channel_id, width, height} = this.props;
     if(!api_key) {
       throw new Error('An API key must be provided');
     }
@@ -53,10 +59,12 @@ class YouTubeChannel extends React.Component {
       })
       .catch(e => {throw new Error(e.message || e)})
     }
+    let height_test = getHeight(height);
 
-    if(width) {
-      this.setState({iframe_width : getWidth(String(width))});
-    }
+    this.setState({
+      iframe_width : width ? getWidth(width) : this.state.width,
+      iframe_height : height ? getHeight(height) : this.state.height
+    })
   }
 
   render() {
@@ -81,7 +89,7 @@ class YouTubeChannel extends React.Component {
           <iframe
             id='player'
             width={this.state.iframe_width}
-            height={height || 390}
+            height={this.state.iframe_height}
             frameBorder={frame_border || '0'}
             src={`http://www.youtube.com/embed/${this.state.video_id}?enablejsapi=1`}
             style={iframe_style || {}}
@@ -92,7 +100,7 @@ class YouTubeChannel extends React.Component {
         <div
           id='video-list-container'
           className={`${video_list_container_class || ''}`}
-          style={{height}}
+          style={{height : `${this.state.iframe_height}px`}}
           >
           <VideoList
             video_list={this.state.video_list}

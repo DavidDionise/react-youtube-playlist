@@ -7,8 +7,8 @@ import './styles.scss';
 const App = () => {
   return (
     <YouTubeChannel
-      width={'50%'}
-      height={390}
+      width={'75%'}
+      height={'100%'}
       api_key='AIzaSyAgqLIxOST5fML1Ywg_xW6F5ttvnjSqjqQ'
       playlist_id='PL64BwQcJEEVImdziHEAlXzb5Zhzs1KNKT'
       show_thumbnails
