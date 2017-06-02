@@ -1,23 +1,30 @@
 import React from 'react';
 import $ from 'jquery';
 const dotdotdot = require('utils/dotdotdot')($);
+import {Popover, OverlayTrigger} from 'react-bootstrap';
 
 class VideoList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.dotdotdot_config = {
-      ellipsis : '...',
-      wrap : 'letter',
-      height : 40,
-      tolerance : 0,
-      callback : (is_trucated) => {console.log('truncated = ', is_trucated)}
+    this.state = {
+      truncated_list : []
     }
   }
-  componentDidUpdate() {
+
+  componentDidMount() {
+    let truncated_list = [];
     this.props.video_list.forEach(v => {
-      $(`#${v.id}`).dotdotdot(this.dotdotdot_config);
-    })
+      $(`#${v.id}`).dotdotdot({
+        ellipsis : '...',
+        wrap : 'letter',
+        height : 40,
+        tolerance : 0,
+        callback : (is_trucated) => {is_trucated ? truncated_list.push(v.id) : null}
+      });
+    });
+
+    this.setState({truncated_list});
   }
 
   render() {
@@ -25,22 +32,31 @@ class VideoList extends React.Component {
 
     return (
       <div>
-        {video_list.map(v => {
+        {video_list.map((v, idx) => {
           const {url} = v.snippet.thumbnails.default;
           const {title} = v.snippet;
           const {videoId} = v.snippet.resourceId;
 
           return (
-            <div
-              className='video-container'
-              key={v.id}
-              onClick={() => {handleChange(videoId)}}
+            <OverlayTrigger
+              id={`${v.id}-overlay-id`}
+              trigger={['hover','focus']}
+              placement='left'
+              overlay={
+                this.state.truncated_list.find(e => e == v.id) ?
+                <Popover>{title}</Popover> :
+                <Popover bsClass='hidden' />
+              }
               >
-              {show_thumbnails ? <img src={url} /> : null}
-              <div id={v.id} className='title-container'>
-                {title + ' asdjf;akj;flaj f;lajsdf; ljasd;lfja;ldsj fa;lkjd flkajf;laj;lfa;lfj'}
+              <div
+                className='video-container'
+                key={v.id}
+                onClick={() => {handleChange(videoId)}}
+                >
+                {show_thumbnails ? <img src={url} /> : null}
+                <div id={v.id} className='title-container'>{title}</div>
               </div>
-            </div>
+            </OverlayTrigger>
           )
         })}
       </div>

@@ -33,6 +33,7 @@ class YouTubeChannel extends React.Component {
     super(props);
 
     this.state = {
+      fetching : true,
       video_list : [],
       video_id : '',
       iframe_width : 640,
@@ -55,11 +56,10 @@ class YouTubeChannel extends React.Component {
         if(list.length > 0) {
           video_id = list[0].snippet.resourceId.videoId;
         }
-        this.setState({video_list : list, video_id});
+        this.setState({video_list : list, video_id, fetching : false});
       })
       .catch(e => {throw new Error(e.message || e)})
     }
-    let height_test = getHeight(height);
 
     this.setState({
       iframe_width : width ? getWidth(width) : this.state.width,
@@ -91,23 +91,26 @@ class YouTubeChannel extends React.Component {
             width={this.state.iframe_width}
             height={this.state.iframe_height}
             frameBorder={frame_border || '0'}
-            src={`http://www.youtube.com/embed/${this.state.video_id}?enablejsapi=1`}
+            src={`http://www.youtube.com/embed/${this.state.video_id}?enablejsapi=1?playlist=${this.props.playlist_id}`}
             style={iframe_style || {}}
             allowFullScreen
             scrolling={`${'yes' || scrolling}`}
           />
         </div>
-        <div
-          id='video-list-container'
-          className={`${video_list_container_class || ''}`}
-          style={{height : `${this.state.iframe_height}px`}}
-          >
-          <VideoList
-            video_list={this.state.video_list}
-            handleChange={v => this.setState({video_id : v})}
-            show_thumbnails={show_thumbnails}
-          />
-        </div>
+
+          <div
+            id='video-list-container'
+            className={`${video_list_container_class || ''}`}
+            style={{height : `${this.state.iframe_height}px`}}
+            >
+            {this.state.fetching ? null : (
+              <VideoList
+                video_list={this.state.video_list}
+                handleChange={v => this.setState({video_id : v})}
+                show_thumbnails={show_thumbnails}
+              />
+            )}
+          </div>
       </div>
     )
   }
