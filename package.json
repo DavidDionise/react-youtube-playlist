@@ -1,8 +1,8 @@
 {
-  "name": "src",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "react-youtube-playlist",
+  "version": "1.0.1",
+  "description": "A react component for displaying the contents of a user's YouTube playlist.",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --watch --out-dir dist",
@@ -11,12 +11,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "peerDependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
   "dependencies": {
     "es6-promise": "^4.1.0",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.2.1",
     "react": "^15.5.4",
-    "react-bootstrap": "^0.31.0",
     "react-dom": "^15.5.4",
     "react-proptypes": "^1.0.0"
   },

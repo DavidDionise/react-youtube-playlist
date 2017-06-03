@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import VideoList from './video-list';
+import $ from 'jquery';
 import {
   videoInit,
   fetchVideos,
-  getWidth,
   getHeight
  } from 'utils';
 
@@ -37,7 +37,19 @@ class YouTubeChannel extends React.Component {
       video_list : [],
       video_id : '',
       iframe_width : 640,
-      iframe_height : 390
+      iframe_height : 390,
+      small_screen : window.innerWidth < 980
+    }
+
+    this.handleResize = this.handleResize.bind(this);
+  }
+
+  handleResize(e) {
+    if(e.target.innerWidth > 980 && this.state.small_screen) {
+      this.setState({small_screen : false});
+    }
+    else if(e.target.innerWidth <= 980 && !this.state.small_screen) {
+      this.setState({small_screen : true});
     }
   }
 
@@ -61,10 +73,13 @@ class YouTubeChannel extends React.Component {
       .catch(e => {throw new Error(e.message || e)})
     }
 
-    this.setState({
-      iframe_width : width ? getWidth(width) : this.state.width,
-      iframe_height : height ? getHeight(height) : this.state.height
-    })
+    this.setState({iframe_height : height ? getHeight(height) : this.state.height});
+
+    $(window).on('resize', this.handleResize);
+  }
+
+  componentWillUnmount() {
+    $(window).off('resize', this.handleResize)
   }
 
   render() {
@@ -80,37 +95,40 @@ class YouTubeChannel extends React.Component {
       scrolling,
     } = this.props;
 
+    const video_list_style = this.state.small_screen ? {minHeight : '20px'} : {height : `${this.state.iframe_height}px`};
+
     return (
       <div
         id='react-youtube-channel-container'
         className={`${container_class || ''}`}
+        style={{width}}
         >
         <div className={`iframe-container ${iframe_container_class || ''}`}>
           <iframe
             id='player'
-            width={this.state.iframe_width}
             height={this.state.iframe_height}
             frameBorder={frame_border || '0'}
             src={`http://www.youtube.com/embed/${this.state.video_id}?enablejsapi=1?playlist=${this.props.playlist_id}`}
-            style={iframe_style || {}}
+            style={{width : '100%'}}
             allowFullScreen
             scrolling={`${'yes' || scrolling}`}
           />
         </div>
-
-          <div
-            id='video-list-container'
-            className={`${video_list_container_class || ''}`}
-            style={{height : `${this.state.iframe_height}px`}}
-            >
-            {this.state.fetching ? null : (
-              <VideoList
-                video_list={this.state.video_list}
-                handleChange={v => this.setState({video_id : v})}
-                show_thumbnails={show_thumbnails}
-              />
-            )}
-          </div>
+        <div
+          id='video-list-container'
+          className={`${video_list_container_class || ''}`}
+          style={video_list_style}
+          >
+          {this.state.fetching ? null : (
+            <VideoList
+              video_list={this.state.video_list}
+              current_video_id={this.state.video_id}
+              handleChange={v => this.setState({video_id : v})}
+              show_thumbnails={show_thumbnails}
+              small_screen={this.state.small_screen}
+            />
+          )}
+        </div>
       </div>
     )
   }
