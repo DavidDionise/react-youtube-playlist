@@ -115,7 +115,7 @@ class YouTubeChannel extends React.Component {
           />
         </div>
         <div
-          id='video-list-container'
+          id='outer-video-list-container'
           className={`${video_list_container_class || ''}`}
           style={video_list_style}
           >

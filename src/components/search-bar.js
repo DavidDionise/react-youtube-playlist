@@ -30,10 +30,8 @@ class SearchBar extends React.Component {
       this.timer_id = setTimeout(() => {
         this.update_valid = true;
         this.props.handleUpdateFilteredVideos(filtered_video_list);
-      }, 100);
+      }, 200);
     }
-
-    this.setState({current_input : value});
   }
 
   render() {
@@ -42,7 +40,6 @@ class SearchBar extends React.Component {
         <input
           className='form-control'
           placeholder='Filter By Video Title'
-          value={this.state.current_input}
           onChange={this.handleChange}
         />
       </div>
