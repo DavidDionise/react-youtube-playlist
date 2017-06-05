@@ -20,8 +20,6 @@ const App = () => {
 
 ### Available Props
 
-|           |                                   |
-|-----------|-----------------------------------|
 |api_key    | String : Your [Google API key](https://developers.google.com/maps/documentation/javascript/get-api-key)|
 |playlist_id| String : Your YouTube playlist ID |
 |width | String \| Number : Can be a percent or number (pixels) |
