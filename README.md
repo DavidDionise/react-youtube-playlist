@@ -22,7 +22,16 @@ const App = () => {
 
 |           |                                   |
 |-----------|-----------------------------------|
-|api_key    | String : Your [Google API key]    |
+|api_key    | String : Your [Google API key](https://developers.google.com/maps/documentation/javascript/get-api-key)|
+|playlist_id| String : Your YouTube playlist ID |
+|width | String \| Number : Can be a percent or number (pixels) |
+|height |  String \| Number : Can be a percent or number (pixels) |
+|show_thumbnails | Bool : Set to false if you don't want the thumbnail images |
+|container_class | String : A class name for the containing DOM node|
+|iframe_container_class| String : A class name for the iframe container DOM node|
+|frame_border| Number : iframe border size|
+|scrolling | Bool : Enable/Disable iframe scrolling|
+
 
 
 ```javascript
@@ -30,7 +39,6 @@ const App = () => {
   api_key={String}
   width={300}
   height={400}
-  frame_border={0}
   iframe_style={''}
   show_thumbnails={true}
   iframe_container_class={''}
