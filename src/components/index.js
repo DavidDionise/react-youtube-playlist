@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 import VideoList from './video-list';
 import $ from 'jquery';
 import {
-  videoInit,
-  fetchVideos,
+  youTubeFetch,
   getHeight
  } from 'utils';
 
 class YouTubeChannel extends React.Component {
   static propTypes = {
     api_key: PropTypes.string.isRequired,
-    channel_id: PropTypes.string,
     playlist_id: PropTypes.string,
     width: PropTypes.oneOfType([
       PropTypes.string, PropTypes.number
@@ -34,8 +32,10 @@ class YouTubeChannel extends React.Component {
 
     this.state = {
       fetching : true,
-      video_list : [],
+      initial_video_list : [],
       video_id : '',
+      next_page_token : '',
+      total_results_count : 0,
       iframe_width : 640,
       iframe_height : 390,
       small_screen : window.innerWidth < 980
@@ -54,23 +54,30 @@ class YouTubeChannel extends React.Component {
   }
 
   componentDidMount() {
-    const {api_key, playlist_id, channel_id, width, height} = this.props;
+    const {api_key, playlist_id, width, height} = this.props;
     if(!api_key) {
       throw new Error('An API key must be provided');
     }
-    if(!channel_id && !playlist_id) {
-      throw 'A channel ID or playlist ID must be provided';
+    if(!playlist_id) {
+      throw 'A playlist ID must be provided';
     }
     else {
-      fetchVideos(channel_id, playlist_id, api_key)
-      .then(list => {
-        let video_id = '';
-        if(list.length > 0) {
-          video_id = list[0].snippet.resourceId.videoId;
+      youTubeFetch(playlist_id, api_key)
+      .then(video_data => {
+        let video_id, channel_id = '';
+        const {items, nextPageToken, pageInfo} = video_data;
+        if(items.length > 0) {
+          video_id = items[0].snippet.resourceId.videoId;
         }
-        this.setState({video_list : list, video_id, fetching : false});
+        this.setState({
+          initial_video_list : items,
+          video_id,
+          fetching : false,
+          next_page_token : nextPageToken,
+          total_results_count : pageInfo.totalResults
+        });
       })
-      .catch(e => {throw new Error(e.message || e)})
+      .catch(e => {console.log(e.message || e)});
     }
 
     this.setState({iframe_height : height ? getHeight(height) : this.state.height});
@@ -121,11 +128,15 @@ class YouTubeChannel extends React.Component {
           >
           {this.state.fetching ? null : (
             <VideoList
-              video_list={this.state.video_list}
+              initial_video_list={this.state.initial_video_list}
               current_video_id={this.state.video_id}
               handleChange={v => this.setState({video_id : v})}
               show_thumbnails={show_thumbnails}
               small_screen={this.state.small_screen}
+              total_results_count={this.state.total_results_count}
+              api_key={this.props.api_key}
+              playlist_id={this.props.playlist_id}
+              next_page_token={this.state.next_page_token}
             />
           )}
         </div>

@@ -2,14 +2,15 @@ Usage is as follows:
 
 ```javascript
 import YouTubeChannel from 'react-youtube-channel';
+import from 'reacty-youtube-playlist/dist/react-youtube-channel-styles'
 
 const App = () => {
   return (
-    <YouTubeChannel
-      width={640}
+    <YouTubePlaylist
+      width={'85%'}
       height={390}
       api_key='YourGoogleApiKey'
-      channel_id='YourYoutubeChannelID'
+      playlist_id='YourYoutubePlaylistID'
       show_thumbnails
     />
   )
@@ -19,10 +20,14 @@ const App = () => {
 
 ### Available Props
 
+|           |                                   |
+|-----------|-----------------------------------|
+|api_key    | String : Your [Google API key]    |
+
+
 ```javascript
-<YouTubeChannel
-  api_key=""
-  channel_id=""
+<YouTubePlaylist
+  api_key={String}
   width={300}
   height={400}
   frame_border={0}
@@ -32,3 +37,5 @@ const App = () => {
   video_list_container_class={''}
 />
 ```
+
+### Note : You must include bootstrap css in your project for some of the UI for this component to work.

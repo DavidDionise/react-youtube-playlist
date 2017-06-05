@@ -10,7 +10,7 @@ const App = () => {
       width={'85%'}
       height={'400'}
       api_key='AIzaSyAgqLIxOST5fML1Ywg_xW6F5ttvnjSqjqQ'
-      playlist_id='PL64BwQcJEEVImdziHEAlXzb5Zhzs1KNKT'
+      playlist_id='PL4lEESSgxM_5O81EvKCmBIm_JT5Q7JeaI'
       show_thumbnails
     />
   )
