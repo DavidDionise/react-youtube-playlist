@@ -1,6 +1,6 @@
 {
   "name": "react-youtube-playlist",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "A react component for displaying the contents of a user's YouTube playlist.",
   "main": "dist/index.js",
   "scripts": {
