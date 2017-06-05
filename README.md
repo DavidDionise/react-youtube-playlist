@@ -20,6 +20,7 @@ const App = () => {
 
 ### Available Props
 
+|           |                                   |
 |-----------|-----------------------------------|
 |api_key    | String : Your [Google API key](https://developers.google.com/maps/documentation/javascript/get-api-key)|
 |playlist_id| String : Your YouTube playlist ID |
@@ -27,7 +28,7 @@ const App = () => {
 |height |  String \| Number : Can be a percent or number (pixels) |
 |show_thumbnails | Bool : Set to false if you don't want the thumbnail images |
 |container_class | String : A class name for the containing DOM node|
-|iframe_container_class| String : A class name for the iframe container DOM node|
+|iframe_container_class| String : A class name for the iframe container DOM node
 |frame_border| Number : iframe border size|
 |scrolling | Bool : Enable/Disable iframe scrolling|
 
