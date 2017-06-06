@@ -2,7 +2,7 @@ Usage is as follows:
 
 ```javascript
 import YouTubeChannel from 'react-youtube-channel';
-import from 'reacty-youtube-playlist/dist/react-youtube-channel-styles'
+import 'reacty-youtube-playlist/dist/styles'
 
 const App = () => {
   return (
