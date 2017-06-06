@@ -46,4 +46,4 @@ const App = () => {
 />
 ```
 
-### Note : You must include bootstrap css in your project for some of the UI for this component to work.
+### Note : You must include bootstrap css in your project for some of the UI in this component to work.
