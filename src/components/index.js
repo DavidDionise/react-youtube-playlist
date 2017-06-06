@@ -137,6 +137,7 @@ class YouTubeChannel extends React.Component {
               api_key={this.props.api_key}
               playlist_id={this.props.playlist_id}
               next_page_token={this.state.next_page_token}
+              height={height}
             />
           )}
         </div>

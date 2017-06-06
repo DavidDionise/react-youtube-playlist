@@ -16,7 +16,7 @@ class VideoList extends React.Component {
       filter_applied : false,
       fetching_page : false,
       next_page_token : this.props.next_page_token,
-      inner_video_list_container_height : this.props.height ? (this.props.small_screen ? 160 : this.props.height - 40) : 160
+      inner_video_list_container_height : this.props.height ? (this.props.small_screen ? 160 : this.props.height - 60) : 160
     }
 
     this.initDotdotdot = this.initDotdotdot.bind(this);
@@ -80,7 +80,7 @@ class VideoList extends React.Component {
       this.initDotdotdot();
 
       this.setState({
-        inner_video_list_container_height : this.props.small_screen ? 160 : this.props.height - 40
+        inner_video_list_container_height : this.props.small_screen ? 160 : this.props.height - 60
       })
     }
   }
