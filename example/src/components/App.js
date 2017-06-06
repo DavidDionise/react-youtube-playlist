@@ -1,6 +1,6 @@
 import React from 'react';
 import YouTubeChannel from '../../../dist/';
-import '../../../dist/react-youtube-channel-styles.scss';
+import '../../../dist/styles.scss';
 
 import './styles.scss';
 
