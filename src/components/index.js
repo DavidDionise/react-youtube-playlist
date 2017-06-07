@@ -115,7 +115,7 @@ class YouTubePlaylist extends React.Component {
             id='player'
             height={this.state.iframe_height}
             frameBorder={frame_border || '0'}
-            src={`http://www.youtube.com/embed/${this.state.video_id}?enablejsapi=1?playlist=${this.props.playlist_id}`}
+            src={`https://www.youtube.com/embed/${this.state.video_id}?enablejsapi=1?playlist=${this.props.playlist_id}`}
             style={{width : '100%'}}
             allowFullScreen
             scrolling={`${'yes' || scrolling}`}
