@@ -7,7 +7,7 @@ import {
   getHeight
  } from 'utils';
 
-class YouTubeChannel extends React.Component {
+class YouTubePlaylist extends React.Component {
   static propTypes = {
     api_key: PropTypes.string.isRequired,
     playlist_id: PropTypes.string,
@@ -146,4 +146,4 @@ class YouTubeChannel extends React.Component {
   }
 }
 
-export default YouTubeChannel;
+export default YouTubePlaylist;
