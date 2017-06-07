@@ -7,7 +7,6 @@ import youTubeFetchFiltered from './youtube-fetch-filtered';
 
 export {
   youTubeFetch,
-  fetchVideos,
   getWidth,
   getHeight,
   dotdotdot,
