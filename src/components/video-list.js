@@ -5,6 +5,8 @@ import {equalVideoList, youTubeFetch} from 'utils';
 import {Popover, OverlayTrigger} from 'react-bootstrap';
 import SearchBar from './search-bar';
 
+let is_mounted = false;
+
 class VideoList extends React.Component {
   constructor(props) {
     super(props);
@@ -34,7 +36,9 @@ class VideoList extends React.Component {
         tolerance : 0,
         callback : (is_trucated) => {
           const list = this.state.truncated_list;
-          this.setState({truncated_list : is_trucated ? [...list, v.id] : list.filter(e => e != v.id)});
+          if(is_mounted) {
+            this.setState({truncated_list : is_trucated ? [...list, v.id] : list.filter(e => e != v.id)});
+          }
         }
       });
     });
@@ -42,7 +46,9 @@ class VideoList extends React.Component {
 
   handleUpdateFilteredVideos(videos, filter_applied) {
     this.state.master_video_list.forEach(v => {$(`#${v.id}`).trigger('destroy')});
-    this.setState({filtered_video_list : videos, filter_applied}, this.initDotdotdot);
+    if(is_mounted) {
+      this.setState({filtered_video_list : videos, filter_applied}, this.initDotdotdot);
+    }
   }
 
   handleScroll(e) {
@@ -55,14 +61,16 @@ class VideoList extends React.Component {
         this.setState({fetching_page : true});
         youTubeFetch(playlist_id, api_key, this.state.next_page_token)
         .then(result => {
-          const {master_video_list} = this.state;
-          master_video_list.forEach(v => {$(`#${v.id}`) ? $(`#${v.id}`).trigger('destroy') : null});
-          this.setState({
-            next_page_token : result.nextPageToken,
-            master_video_list : [...master_video_list, ...result.items],
-            filtered_video_list : [...master_video_list, ...result.items],
-            fetching_page : false
-          }, this.initDotdotdot);
+          if(is_mounted) {
+            const {master_video_list} = this.state;
+            master_video_list.forEach(v => {$(`#${v.id}`) ? $(`#${v.id}`).trigger('destroy') : null});
+            this.setState({
+              next_page_token : result.nextPageToken,
+              master_video_list : [...master_video_list, ...result.items],
+              filtered_video_list : [...master_video_list, ...result.items],
+              fetching_page : false
+            }, this.initDotdotdot);
+          }
         })
         .catch(e => {console.log('ERROR IN SCROLL HANDLER : ', e)})
       }
@@ -70,6 +78,7 @@ class VideoList extends React.Component {
   }
 
   componentDidMount() {
+    is_mounted = true;
     this.initDotdotdot();
     $('.inner-video-list-container').on('scroll', this.handleScroll);
   }
@@ -77,15 +86,18 @@ class VideoList extends React.Component {
   componentDidUpdate(prev_props) {
     if(prev_props.small_screen != this.props.small_screen) {
       this.state.master_video_list.forEach(v => {$(`#${v.id}`).trigger('destroy')});
-      this.initDotdotdot();
 
-      this.setState({
-        inner_video_list_container_height : this.props.small_screen ? 160 : this.props.height - 60
-      })
+      if(is_mounted) {
+        this.initDotdotdot();
+        this.setState({
+          inner_video_list_container_height : this.props.small_screen ? 160 : this.props.height - 60
+        });
+      }
     }
   }
 
   componentWillUnmount() {
+    is_mounted = false;
     $('.inner-video-list-container').off('scroll', this.handleScroll);
   }
 

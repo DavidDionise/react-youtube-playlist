@@ -7,6 +7,8 @@ import {
   getHeight
  } from 'utils';
 
+ let is_mounted = false;
+
 class YouTubePlaylist extends React.Component {
   static propTypes = {
     api_key: PropTypes.string.isRequired,
@@ -45,15 +47,18 @@ class YouTubePlaylist extends React.Component {
   }
 
   handleResize(e) {
-    if(e.target.innerWidth > 980 && this.state.small_screen) {
-      this.setState({small_screen : false});
-    }
-    else if(e.target.innerWidth <= 980 && !this.state.small_screen) {
-      this.setState({small_screen : true});
+    if(is_mounted) {
+      if(e.target.innerWidth > 980 && this.state.small_screen) {
+        this.setState({small_screen : false});
+      }
+      else if(e.target.innerWidth <= 980 && !this.state.small_screen) {
+        this.setState({small_screen : true});
+      }
     }
   }
 
   componentDidMount() {
+    is_mounted = true;
     const {api_key, playlist_id, width, height} = this.props;
     if(!api_key) {
       throw new Error('An API key must be provided');
@@ -64,18 +69,20 @@ class YouTubePlaylist extends React.Component {
     else {
       youTubeFetch(playlist_id, api_key)
       .then(video_data => {
-        let video_id, channel_id = '';
-        const {items, nextPageToken, pageInfo} = video_data;
-        if(items.length > 0) {
-          video_id = items[0].snippet.resourceId.videoId;
+        if(is_mounted) {
+          let video_id, channel_id = '';
+          const {items, nextPageToken, pageInfo} = video_data;
+          if(items.length > 0) {
+            video_id = items[0].snippet.resourceId.videoId;
+          }
+          this.setState({
+            initial_video_list : items,
+            video_id,
+            fetching : false,
+            next_page_token : nextPageToken,
+            total_results_count : pageInfo.totalResults
+          });
         }
-        this.setState({
-          initial_video_list : items,
-          video_id,
-          fetching : false,
-          next_page_token : nextPageToken,
-          total_results_count : pageInfo.totalResults
-        });
       })
       .catch(e => {console.log(e.message || e)});
     }
@@ -86,6 +93,7 @@ class YouTubePlaylist extends React.Component {
   }
 
   componentWillUnmount() {
+    is_mounted = false;
     $(window).off('resize', this.handleResize)
   }
 
@@ -130,7 +138,7 @@ class YouTubePlaylist extends React.Component {
             <VideoList
               initial_video_list={this.state.initial_video_list}
               current_video_id={this.state.video_id}
-              handleChange={v => this.setState({video_id : v})}
+              handleChange={v => {is_mounted ? this.setState({video_id : v}) : null}}
               show_thumbnails={show_thumbnails}
               small_screen={this.state.small_screen}
               total_results_count={this.state.total_results_count}

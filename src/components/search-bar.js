@@ -5,10 +5,6 @@ class SearchBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      current_input : ''
-    }
-
     this.update_valid = true;
     this.timer_id;
 
